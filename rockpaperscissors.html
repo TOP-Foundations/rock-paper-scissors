@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Rock, Paper, & Scissors</title>
+    <meta name="description" content="The first of many projects trying to teaach myself how to code">
+    <meta name="author" content="Simple Sapien">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@900&family=Open+Sans&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <section class="leftside">
+
+        <img src="crown.png" id="playercrown">
+
+        <p id="playerscore"></p>
+
+        <p id="userchoice"></p>
+
+        <div class="buttons">
+
+            <button id="rock">Rock</button>
+
+            <button id="paper">Paper</button>
+        
+            <button id="scissors">Scissors</button>
+
+        </div>
+
+    </section>
+
+    <section class="rightside">
+
+        <img src="crown.png" id="computercrown">
+
+        <p id="computerscore"></p>
+
+        <p id="computerchoice"></p>
+
+    </section>
+
+    <button id="resetbutton">
+        <img src="refresh.png">
+    </button>
+    
+</body>
+
+<script>
+  
+let playerSelection;
+let computerSelection;
+
+let userChoice = document.getElementById('userchoice');
+let computerChoice = document.getElementById('computerchoice');
+
+let playerScore = 0;
+let computerScore = 0;
+
+let playerScoreDisplay = document.getElementById('playerscore');
+let computerScoreDisplay = document.getElementById('computerscore');
+
+const computerCrown = document.getElementById('computercrown');
+const playerCrown = document.getElementById('playercrown');
+
+const resetButton = document.getElementById('resetbutton');
+
+function computerPlay(){
+    let choices = ['rock', 'paper', 'scissors'];
+    computerSelection = choices[Math.floor(Math.random() * 3)];
+    return computerSelection;
+};
+
+// Loops through every button and listens for a click, then sets the id of that item as the value of the playerSelection variable, then starts the game.
+document.querySelectorAll('button').forEach(item => {
+  item.addEventListener('click', event => {
+      playerSelection = item.id;
+      computerPlay();
+      playRound();
+  })
+});
+
+resetButton.addEventListener('click', function(){
+    playerScore = 0;
+    computerScore = 0;
+    playerScoreDisplay.innerText = '';
+    computerScoreDisplay.innerText = '';
+    computerChoice.innerText = '';
+    userChoice.innerText = '';
+    resetButton.style.display = "none";
+    document.querySelector('.buttons').style.display = "block";
+})
+
+function playRound(){
+
+    playerCrown.style.display = 'none';
+    computerCrown.style.display = 'none';
+
+    userChoice.innerText = playerSelection;
+    computerChoice.innerText = computerSelection;
+
+    checkWinner();
+
+    displayWinner();
+
+};
+
+function checkWinner(){
+
+    if (playerSelection === 'scissors'){
+
+        if (computerSelection === 'rock')
+        { 
+            ++computerScore;
+            computerCrown.style.display = 'block';
+        }
+        else if (computerSelection === 'paper')
+        { 
+            ++playerScore;
+            playerCrown.style.display = 'block';
+        }
+    }
+    
+    if (playerSelection === 'rock'){
+
+        if (computerSelection === 'scissors')
+        {
+            ++playerScore;
+            playerCrown.style.display = 'block';
+        }
+        else if (computerSelection === 'paper')
+        { 
+            ++computerScore;
+            computerCrown.style.display = 'block';
+        }
+    }
+
+    if (playerSelection === 'paper'){
+
+        if (computerSelection === 'scissors')
+        {
+            ++computerScore;
+            computerCrown.style.display = 'block';
+        }
+        else if (computerSelection === 'rock')
+        { 
+            ++playerScore;
+            playerCrown.style.display = 'block';
+        }
+    }
+
+    if (playerSelection === 'paper' && computerSelection === 'paper'
+    || playerSelection === 'scissors' && computerSelection === 'scissors'
+    || playerSelection === 'rock' && computerSelection === 'rock')
+    {
+        playerScoreDisplay.innerText = 'Tie';
+        computerScoreDisplay.innerText = 'Tie';
+    } 
+    else 
+    {
+        playerScoreDisplay.innerText = `You: ${playerScore}`;
+        computerScoreDisplay.innerText = `Computer: ${computerScore}`;
+    }
+}
+
+function displayWinner(){
+
+    if (playerScore === 5)
+    {
+        computerChoice.innerText = '';
+        userChoice.innerText = 'You win!';
+        resetButton.style.display = "block";
+        document.querySelector('.buttons').style.display = "none";
+    } 
+
+    else if (computerScore === 5)
+    {
+        computerChoice.innerText = 'You lose!';
+        userChoice.innerText = '';
+        resetButton.style.display = "block";
+        document.querySelector('.buttons').style.display = "none";
+    }
+
+}
+
+</script>
+</html>
